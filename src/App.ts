@@ -1,13 +1,14 @@
 import express, { Application }  from "express";
 import cors from "cors";
-import PacienteRouter  from "./Routes/Paciente.routes";
+import RouterCont from "./Routes/index";
 
 import "dotenv/config";
+
 const PORT = process.env.PORT || 3001;
 
 class App{
 
-    public app: Application;
+    public app: any;
 
     constructor(){
         this.app = express();
@@ -22,7 +23,10 @@ class App{
     }
 
     private routes(): void{
-        this.app.use(PacienteRouter);
+        const routerCont = new RouterCont();
+        const routex = routerCont.getRoutes();
+        // this.app.use(routerCont);
+        this.app.use(routex);
     }
 
     public listen() {
