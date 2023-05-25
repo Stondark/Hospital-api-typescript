@@ -1,11 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 
+
+/**
+ * Clase padre usada para la instanciación del cliente de Prisma
+ */
+
 abstract class Controller{
 
-    protected prismaClient : PrismaClient;
+    protected prismaDB : PrismaClient;
 
     constructor(){
-        this.prismaClient = new PrismaClient();
+        this.prismaDB = new PrismaClient();
     }
 }
 

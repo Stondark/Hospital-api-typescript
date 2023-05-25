@@ -3,6 +3,7 @@ import RouterCont from "./index";
 import Paciente from "../Controllers/Paciente";
 
 class PacienteRouter extends RouterCont {
+  
   private pacienteController: Paciente;
 
   constructor() {
@@ -13,15 +14,15 @@ class PacienteRouter extends RouterCont {
   }
 
   /**
-   * hola
+   * Función que genera las rutas y llama la instancia del controlador 
+   * haciendo referencia al objeto Paciente mediante Bind
    */
-  public hola() {
-    console.log("hOLA");
-  }
 
   protected routes(): void {
-    this.router.get("/", this.hola);
-    this.router.get("/adios", this.hola);
+    this.router.get("/",  this.pacienteController.findPacient.bind(this.pacienteController));
+    this.router.get("/:id", this.pacienteController.findPacientById.bind(this.pacienteController));
+    this.router.post("/",  this.pacienteController.cratePacient.bind(this.pacienteController));
+    this.router.put("/:id", this.pacienteController.findPacientById.bind(this.pacienteController));
   }
 
   public getRoutes(): Router {

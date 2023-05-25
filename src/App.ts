@@ -4,18 +4,17 @@ import RouterCont from "./Routes/index";
 
 import "dotenv/config";
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT ?? 3001;
 
 class App{
 
-    public app: any;
+    public app: Application;
 
     constructor(){
         this.app = express();
         this.config();
         this.routes();
     }
-
     
     private config(){
         this.app.use(cors());
@@ -24,9 +23,8 @@ class App{
 
     private routes(): void{
         const routerCont = new RouterCont();
-        const routex = routerCont.getRoutes();
-        // this.app.use(routerCont);
-        this.app.use(routex);
+        const routers = routerCont.getRoutes();
+        this.app.use(routers);
     }
 
     public listen() {
