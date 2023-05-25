@@ -11,6 +11,7 @@ class PacienteRouter extends RouterCont {
     this.pacienteController = new Paciente();
     this.router = Router();
     this.routes();
+    
   }
 
   /**
@@ -19,7 +20,7 @@ class PacienteRouter extends RouterCont {
    */
 
   protected routes(): void {
-    this.router.get("/",  this.pacienteController.findPacient.bind(this.pacienteController));
+    this.router.get("/", this.pacienteController.findPacient.bind(this.pacienteController));
     this.router.get("/:id", this.pacienteController.findPacientById.bind(this.pacienteController));
     this.router.post("/",  this.pacienteController.cratePacient.bind(this.pacienteController));
     this.router.put("/:id", this.pacienteController.updatePacient.bind(this.pacienteController));

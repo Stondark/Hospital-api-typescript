@@ -1,12 +1,11 @@
 import { Router } from "express";
 import { readdirSync } from "fs";
-
+import Logger from "../middleware/Logger";
 
 class RouterCont{
 
     public router : Router;
     private path : string; 
-
 
     constructor(){
         this.router = Router();
@@ -18,10 +17,9 @@ class RouterCont{
         const dirReader = readdirSync(this.path).filter((fileName) => {
             const cleanName = this.cleanFileName(fileName);
             if(cleanName !== 'index'){
-                console.log(`Se está cargando la ruta ${cleanName}`)
                 import(`./${cleanName}`).then((module) => { 
                     const moduleRouter = module.default;
-                    this.router.use(`/${cleanName}`, moduleRouter);
+                    this.router.use(`/${cleanName}`, Logger.consoleRequest, moduleRouter);
                 })
             }
 

@@ -1,40 +1,44 @@
 import { Request, Response } from "express";
 import Controller from "./Controller";
 
-class Paciente extends Controller{
+class Medico extends Controller{
 
     constructor(){
         super();
     }
 
-    async findPacient(req : Request, res : Response) {
+    async findMedico(req : Request, res : Response) {
         try {
-            const pacients = await this.prismaDB.paciente.findMany();
-            
-            if(pacients.length == 0){
-                throw new Error("No se encuentran registros para Pacientes");
+            const medico = await this.prismaDB.medico.findMany({
+                include: {
+                    especialidad: true
+                }
+            });
+
+            if(medico.length == 0){
+                throw new Error("No se encuentran registros para Médico");
             }
 
-            res.json({success: true, data: pacients});
+            res.json({success: true, data: medico});
         } catch (e: any) {
             res.status(400).json({success: true, error: e});
         }
     }
 
-    async findPacientById(req : Request, res : Response) {
+    async findMedicoById(req : Request, res : Response) {
         const id = Number(req.params.id);
         try {
-            const pacients = await this.prismaDB.paciente.findUnique({
+            const medico = await this.prismaDB.medico.findUnique({
                 where: {
                     cedula: id
                 }
             });
 
-            if(!pacients){
+            if(!medico){
                 throw new Error("Registro no encontrado");
             }
 
-            res.json({success: true, data: pacients});
+            res.json({success: true, data: medico});
         } catch (e: any) {
             res.status(400).json({success: false, error: e.message });
         }
@@ -47,35 +51,35 @@ class Paciente extends Controller{
      * @param res 
      */
 
-    async cratePacient(req : Request, res : Response) {
+    async crateMedico(req : Request, res : Response) {
         const { data } =  req.body;
         const length_data = Object.keys(data).length;
 
         try {
-            const pacients = await this.prismaDB.paciente.createMany({
+            const medico = await this.prismaDB.medico.createMany({
                 data: data,
                 skipDuplicates: true
             });
 
-            if(pacients.count == 0){
+            if(medico.count == 0){
                 throw new Error("Registro no insertado");
-            } else if (pacients.count != length_data) {
-                throw new Error(`Se insertó solo ${pacients.count} registros de ${length_data}`);
+            } else if (medico.count != length_data) {
+                throw new Error(`Se insertó solo ${medico.count} registros de ${length_data}`);
             }
 
-            res.json({success: true, data: pacients});
+            res.json({success: true, data: medico});
         } catch (e: any) {
             res.status(400).json({success: false, error: e.message });
         }
     }
 
-    async updatePacient(req : Request, res : Response) {
+    async updateMedico(req : Request, res : Response) {
 
         const id = Number(req.params.id);
         const { data } =  req.body;
         try {
 
-            const validId = await this.prismaDB.paciente.findUnique({
+            const validId = await this.prismaDB.medico.findUnique({
                 where: {
                   cedula: id,
                 },
@@ -85,26 +89,26 @@ class Paciente extends Controller{
                 throw new Error("Registro no encontrado");
             }
 
-            const pacients = await this.prismaDB.paciente.update({
+            const medico = await this.prismaDB.medico.update({
                 where: {
                     cedula: id
                 },
                 data: data
             });
 
-            res.json({success: true, data: pacients});
+            res.json({success: true, data: medico});
         } catch (e: any) {
             res.status(400).json({success: false, error: e.message });
         }
     }
 
-    async removePacient(req : Request, res : Response) {
+    async removeMedico(req : Request, res : Response) {
 
         const id = Number(req.params.id);
 
         try {
 
-            const validId = await this.prismaDB.paciente.findUnique({
+            const validId = await this.prismaDB.medico.findUnique({
                 where: {
                   cedula: id,
                 },
@@ -114,17 +118,17 @@ class Paciente extends Controller{
                 throw new Error("Registro no encontrado");
             }
 
-            const pacients = await this.prismaDB.paciente.delete({
+            const medico = await this.prismaDB.medico.delete({
                 where: {
                     cedula: id
                 }
             });
 
-            if(!pacients){
+            if(!medico){
                 throw new Error("El registro no se pudo eliminar");
             }
 
-            res.json({success: true, data: pacients});
+            res.json({success: true, data: medico});
         } catch (e: any) {
             res.status(400).json({success: false, error: e.message });
         }
@@ -133,4 +137,4 @@ class Paciente extends Controller{
 
 }
 
-export default Paciente;
+export default Medico;

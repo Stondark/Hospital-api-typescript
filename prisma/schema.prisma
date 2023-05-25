@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,38 +7,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model cita {
+  idCita     Int      @id @default(autoincrement())
+  fechaHora  DateTime
+  idPaciente Int
+  idMedico   Int
+  medico     medico   @relation(fields: [idMedico], references: [cedula], map: "Cita_idMedico_fkey")
+  paciente   paciente @relation(fields: [idPaciente], references: [cedula], map: "Cita_idPaciente_fkey")
 
-model Paciente {
-  cedula          Int   @id
-  nombre          String
-  apellido        String
-  fechaNacimiento DateTime
-  telefono        String
-  Cita            Cita[]
+  @@index([idMedico], map: "Cita_idMedico_fkey")
+  @@index([idPaciente], map: "Cita_idPaciente_fkey")
 }
 
-model Medico {
-  cedula         Int       @id
+model especialidad {
+  idEspecialidad Int      @id @default(autoincrement())
+  nombre         String
+  medico         medico[]
+}
+
+model medico {
+  cedula         Int          @id
   nombre         String
   apellido       String
   consultorio    String
   correo         String
   idEspecialidad Int
-  especialidad   Especialidad @relation(fields: [idEspecialidad], references: [idEspecialidad])
-  Cita           Cita[]
+  cita           cita[]
+  especialidad   especialidad @relation(fields: [idEspecialidad], references: [idEspecialidad], map: "Medico_idEspecialidad_fkey")
+
+  @@index([idEspecialidad], map: "Medico_idEspecialidad_fkey")
 }
 
-model Especialidad {
-  idEspecialidad Int      @id
-  nombre         String
-  Medico         Medico[]
+model paciente {
+  cedula          Int      @id
+  nombre          String
+  apellido        String
+  fechaNacimiento DateTime
+  telefono        String
+  cita            cita[]
 }
 
-model Cita {
-  idCita     Int      @id
-  fechaHora  DateTime
-  idPaciente Int
-  idMedico   Int
-  Paciente   Paciente @relation(fields: [idPaciente], references: [cedula])
-  Medico     Medico   @relation(fields: [idMedico], references: [cedula])
+model funcionario{
+  idFuncionario Int @id @default(autoincrement())
+  nombre        String
+  username      String?  @unique
+  password      String?
 }
