@@ -69,6 +69,68 @@ class Paciente extends Controller{
         }
     }
 
+    async updatePacient(req : Request, res : Response) {
+
+        const id = Number(req.params.id);
+        const { data } =  req.body;
+        try {
+
+            const validId = await this.prismaDB.paciente.findUnique({
+                where: {
+                  cedula: id,
+                },
+              });
+
+            if(!validId){
+                throw new Error("Registro no encontrado");
+            }
+
+            const pacients = await this.prismaDB.paciente.update({
+                where: {
+                    cedula: id
+                },
+                data: data
+            });
+
+            res.json({success: true, data: pacients});
+        } catch (e: any) {
+            res.status(400).json({success: false, error: e.message });
+        }
+    }
+
+    async removePacient(req : Request, res : Response) {
+
+        const id = Number(req.params.id);
+
+        try {
+
+            const validId = await this.prismaDB.paciente.findUnique({
+                where: {
+                  cedula: id,
+                },
+              });
+
+            if(!validId){
+                throw new Error("Registro no encontrado");
+            }
+
+            const pacients = await this.prismaDB.paciente.delete({
+                where: {
+                    cedula: id
+                }
+            });
+
+            if(!pacients){
+                throw new Error("El registro no se pudo eliminar");
+            }
+
+            res.json({success: true, data: pacients});
+        } catch (e: any) {
+            res.status(400).json({success: false, error: e.message });
+        }
+    }
+
+
 }
 
 export default Paciente;

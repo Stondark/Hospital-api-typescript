@@ -22,7 +22,8 @@ class PacienteRouter extends RouterCont {
     this.router.get("/",  this.pacienteController.findPacient.bind(this.pacienteController));
     this.router.get("/:id", this.pacienteController.findPacientById.bind(this.pacienteController));
     this.router.post("/",  this.pacienteController.cratePacient.bind(this.pacienteController));
-    this.router.put("/:id", this.pacienteController.findPacientById.bind(this.pacienteController));
+    this.router.put("/:id", this.pacienteController.updatePacient.bind(this.pacienteController));
+    this.router.delete("/:id", this.pacienteController.removePacient.bind(this.pacienteController));
   }
 
   public getRoutes(): Router {
