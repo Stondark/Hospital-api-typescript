@@ -22,7 +22,6 @@ class RouterCont{
                     this.router.use(`/${cleanName}`, Logger.consoleRequest, moduleRouter);
                 })
             }
-
         })
     }
 

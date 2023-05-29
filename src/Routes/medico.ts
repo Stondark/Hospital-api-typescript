@@ -1,6 +1,7 @@
 import { Router } from "express";
 import RouterCont from "./index";
 import Medico from "../Controllers/Medico";
+import Session from "../middleware/Session";
 
 class MedicoRouter extends RouterCont {
   
@@ -19,11 +20,11 @@ class MedicoRouter extends RouterCont {
    */
 
   protected routes(): void {
-    this.router.get("/",  this.medicoController.findMedico.bind(this.medicoController));
-    this.router.get("/:id", this.medicoController.findMedicoById.bind(this.medicoController));
-    this.router.post("/",  this.medicoController.crateMedico.bind(this.medicoController));
-    this.router.put("/:id", this.medicoController.updateMedico.bind(this.medicoController));
-    this.router.delete("/:id", this.medicoController.removeMedico.bind(this.medicoController));
+    this.router.get("/", Session.checkJWT, this.medicoController.findMedico.bind(this.medicoController));
+    this.router.get("/:id", Session.checkJWT, this.medicoController.findMedicoById.bind(this.medicoController));
+    this.router.post("/", Session.checkJWT, this.medicoController.crateMedico.bind(this.medicoController));
+    this.router.put("/:id", Session.checkJWT, this.medicoController.updateMedico.bind(this.medicoController));
+    this.router.delete("/:id", Session.checkJWT, this.medicoController.removeMedico.bind(this.medicoController));
   }
 
   public getRoutes(): Router {

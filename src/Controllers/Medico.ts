@@ -54,6 +54,7 @@ class Medico extends Controller{
     async crateMedico(req : Request, res : Response) {
         const { data } =  req.body;
         const length_data = Object.keys(data).length;
+        
 
         try {
             const medico = await this.prismaDB.medico.createMany({

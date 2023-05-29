@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import Controller from "./Controller";
+import Crypt from "../utils/Crypt";
+import Token from "../utils/Token";
 
 class Funcionario extends Controller{
 
@@ -7,38 +9,70 @@ class Funcionario extends Controller{
         super();
     }
 
-    async findMedico(req : Request, res : Response) {
-        try {
-            const medico = await this.prismaDB.medico.findMany({
-                include: {
-                    especialidad: true
-                }
-            });
-
-            if(medico.length == 0){
-                throw new Error("No se encuentran registros para Médico");
+    private async validateExist(user : string){
+        const confirm = await this.prismaDB.funcionario.findFirst({
+            where: {
+                username: user
             }
-
-            res.json({success: true, data: medico});
-        } catch (e: any) {
-            res.status(400).json({success: true, error: e});
-        }
+        });
+    
+        return confirm;
     }
 
-    async findMedicoById(req : Request, res : Response) {
-        const id = Number(req.params.id);
+    async createFuncionario(req : Request, res : Response) {
+        let { data } = req.body;
         try {
-            const medico = await this.prismaDB.medico.findUnique({
-                where: {
-                    cedula: id
+
+            const findUsername = await this.validateExist(data.username);
+
+            if(findUsername){
+                throw new Error("Este usuario ya existe");
+            }
+    
+            let hashedPassword = await Crypt.enCrypt(data.password);
+    
+            const create = await this.prismaDB.funcionario.create({
+                data: {
+                    nombre: data.nombre,
+                    password: hashedPassword,
+                    username: data.username
                 }
             });
+    
+            if(!create){
+                throw new Error("Ocurrió un error al crear este usuario");
+            }
+    
+            res.json({'success': true, data: create});
+        } catch (e: any) {
+            res.status(400).json({success: false, error: e.message });
+        }
+        
+    }
 
-            if(!medico){
-                throw new Error("Registro no encontrado");
+    async loginFuncionario(req : Request, res : Response) {
+        let { data } = req.body;
+
+        try {
+            const findUsername = await this.validateExist(data.username);
+    
+            if(!findUsername){
+                throw new Error("Este usuario no existe");
             }
 
-            res.json({success: true, data: medico});
+            if (typeof findUsername.password !== 'string') {
+                throw new Error("Nombre de usuario no válido");
+            }
+
+            let hashedPassword = await Crypt.compareCrypt(data.password, findUsername.password);
+
+            if(!hashedPassword){
+                throw new Error("Contraseña incorrecta");
+            }
+
+            const token = Token.generateToken(findUsername.idFuncionario);
+
+            res.json({'success': true, data: token});
         } catch (e: any) {
             res.status(400).json({success: false, error: e.message });
         }

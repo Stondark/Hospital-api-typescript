@@ -17,7 +17,7 @@ class Paciente extends Controller{
 
             res.json({success: true, data: pacients});
         } catch (e: any) {
-            res.status(400).json({success: true, error: e});
+            res.status(400).json({success: true, error: e.message });
         }
     }
 

@@ -2,6 +2,8 @@ import { Router } from "express";
 import RouterCont from "./index";
 import Funcionario from "../Controllers/Funcionario";
 
+
+
 class AuthRouter extends RouterCont {
   
   private funcionarioController: Funcionario;
@@ -19,8 +21,8 @@ class AuthRouter extends RouterCont {
    */
 
   protected routes(): void {
-    this.router.post("/create",  this.funcionarioController.findFuncionario.bind(this.funcionarioController));
-    this.router.post("/login",  this.funcionarioController.findFuncionario.bind(this.funcionarioController));
+    this.router.post("/create", this.funcionarioController.createFuncionario.bind(this.funcionarioController));
+    this.router.post("/login", this.funcionarioController.loginFuncionario.bind(this.funcionarioController));
   }
 
   public getRoutes(): Router {
@@ -28,5 +30,5 @@ class AuthRouter extends RouterCont {
   }
 }
 
-export default new MedicoRouter().getRoutes();
+export default new AuthRouter().getRoutes();
 
