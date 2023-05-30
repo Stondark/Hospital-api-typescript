@@ -1,6 +1,9 @@
 import { Router } from "express";
 import RouterCont from "./index";
 import Paciente from "../Controllers/Paciente";
+import { validateParams } from "../validators/general";
+import { validateCreate } from "../validators/paciente";
+
 
 class PacienteRouter extends RouterCont {
   
@@ -21,10 +24,10 @@ class PacienteRouter extends RouterCont {
 
   protected routes(): void {
     this.router.get("/", this.pacienteController.findPacient.bind(this.pacienteController));
-    this.router.get("/:id", this.pacienteController.findPacientById.bind(this.pacienteController));
-    this.router.post("/",  this.pacienteController.cratePacient.bind(this.pacienteController));
-    this.router.put("/:id", this.pacienteController.updatePacient.bind(this.pacienteController));
-    this.router.delete("/:id", this.pacienteController.removePacient.bind(this.pacienteController));
+    this.router.get("/:id", validateParams, this.pacienteController.findPacientById.bind(this.pacienteController));
+    this.router.post("/", validateCreate, this.pacienteController.cratePacient.bind(this.pacienteController));
+    this.router.put("/:id", validateCreate, validateParams, this.pacienteController.updatePacient.bind(this.pacienteController));
+    this.router.delete("/:id", validateParams, this.pacienteController.removePacient.bind(this.pacienteController));
   }
 
   public getRoutes(): Router {

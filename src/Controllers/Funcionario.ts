@@ -20,6 +20,7 @@ class Funcionario extends Controller{
     }
 
     async createFuncionario(req : Request, res : Response) {
+        console.log(req.body);
         let { data } = req.body;
         try {
 
