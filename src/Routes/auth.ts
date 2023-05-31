@@ -17,13 +17,17 @@ class AuthRouter extends RouterCont {
 
   /**
    * Función que genera las rutas y llama la instancia del controlador 
-   * haciendo referencia al objeto Paciente mediante Bind
-   */
+   * haciendo referencia al objeto Funcionario mediante Bind
+  **/
 
   protected routes(): void {
     this.router.post("/create", this.funcionarioController.createFuncionario.bind(this.funcionarioController));
     this.router.post("/login", this.funcionarioController.loginFuncionario.bind(this.funcionarioController));
   }
+
+  /**
+   * @returns retorna la propiedad router con todas las rutas creadas y que así mismo es heredada de la clase RouterCont
+  **/
 
   public getRoutes(): Router {
     return this.router;

@@ -9,6 +9,13 @@ class Funcionario extends Controller{
         super();
     }
 
+    /**
+     * Valida que el usuario exista en el sistema
+     * @param user nombre de usuario que se usará para realizar la consulta
+     * @returns json que contendrá la información del usuario 
+     * @returns en caso de que no exista retornará null
+     */
+
     private async validateExist(user : string){
         const confirm = await this.prismaDB.funcionario.findFirst({
             where: {
@@ -18,6 +25,15 @@ class Funcionario extends Controller{
     
         return confirm;
     }
+
+    /**
+     * Crea un nuevo funcionario en la base de datos,
+     * validando que no exista su username y encriptando su contraseña
+     * @param req el body debe venir en formato {'data': []} donde dentro del array se incluirán n cantidad 
+     * de registros a insertar en la base de datos
+     * @param res res objeto que se usará para retonar la información y el código de estado
+     * @returns objeto json indicando la cantidad de datos almacenados y valor booleano si se ejecutó correctamente
+    **/
 
     async createFuncionario(req : Request, res : Response) {
         console.log(req.body);
@@ -50,6 +66,13 @@ class Funcionario extends Controller{
         }
         
     }
+
+    /**
+     * Valida el usuario y la contraseña del login
+     * @param req objeto donde se almacenará toda la info de la petición
+     * @param res objeto que se usará para retonar la información y el código de estado
+     * @returns objeto json con un JWT y valor booleano si se ejecutó correctamente
+    **/
 
     async loginFuncionario(req : Request, res : Response) {
         let { data } = req.body;

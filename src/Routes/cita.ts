@@ -18,7 +18,7 @@ class EspecialidadRouter extends RouterCont {
 
   /**
    * Función que genera las rutas y llama la instancia del controlador 
-   * haciendo referencia al objeto Medico mediante Bind
+   * haciendo referencia al objeto cita mediante Bind
    */
 
   protected routes(): void {
@@ -26,6 +26,10 @@ class EspecialidadRouter extends RouterCont {
     this.router.get("/:id", validateParams , Session.checkJWT, this.citaController.findCitaById.bind(this.citaController));
     this.router.post("/", validateCreate , Session.checkJWT, this.citaController.createCita.bind(this.citaController));
   }
+
+  /**
+   * @returns retorna la propiedad router con todas las rutas creadas y que así mismo es heredada de la clase RouterCont
+  **/
 
   public getRoutes(): Router {
     return this.router;

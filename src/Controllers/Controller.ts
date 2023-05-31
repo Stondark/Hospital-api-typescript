@@ -2,8 +2,9 @@ import { PrismaClient } from "@prisma/client";
 
 
 /**
- * Clase padre usada para la instanciación del cliente de Prisma
- */
+ * Clase padre/abstracta usada para la instanciación del cliente de Prisma 
+ * y poder ser heredada por sus clases hijas
+*/
 
 abstract class Controller{
 

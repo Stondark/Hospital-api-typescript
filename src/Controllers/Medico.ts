@@ -7,6 +7,13 @@ class Medico extends Controller{
         super();
     }
 
+    /**
+     * Obtiene el listado de todos los médicos
+     * @param req objeto donde se almacenará toda la info de la petición
+     * @param res objeto que se usará para retonar la información y el código de estado
+     * @returns objeto json con la información almacenada y valor booleano si se ejecutó correctamente
+    **/
+
     async findMedico(req : Request, res : Response) {
         try {
             const medico = await this.prismaDB.medico.findMany({
@@ -24,6 +31,13 @@ class Medico extends Controller{
             res.status(400).json({success: true, error: e});
         }
     }
+
+    /**
+     * Obtiene la información de un médico obteniéndola por cédula
+     * @param req objeto donde se almacenará toda la info de la petición
+     * @param res objeto que se usará para retonar la información y el código de estado
+     * @returns objeto json con la información almacenada y valor booleano si se ejecutó correctamente
+    **/
 
     async findMedicoById(req : Request, res : Response) {
         const id = Number(req.params.id);
@@ -46,10 +60,11 @@ class Medico extends Controller{
 
     /**
      * Se crea uno o varios registros en la base de datos
-     * @param req debe venir en formato {'data': []} donde dentro del array se incluirán n cantidad 
+     * @param req el body debe venir en formato {'data': []} donde dentro del array se incluirán n cantidad 
      * de registros a insertar en la base de datos
-     * @param res 
-     */
+     * @param res res objeto que se usará para retonar la información y el código de estado
+     * @returns objeto json indicando la cantidad de datos almacenados y valor booleano si se ejecutó correctamente
+    **/
 
     async crateMedico(req : Request, res : Response) {
         const { data } =  req.body;
@@ -69,6 +84,15 @@ class Medico extends Controller{
             res.status(400).json({success: false, error: e.message });
         }
     }
+
+    /**
+     * Actualiza la información de un médico por cédula
+     * @param req.body debe venir en formato {'data': []} donde dentro del array se incluirá
+     * la nueva información
+     * @param req.param será la cédula del médico a actualizar 
+     * @param res res objeto que se usará para retonar la información y el código de estado
+     * @returns objeto json mostrando la nueva información actualizada y valor booleano si se ejecutó correctamente
+    **/
 
     async updateMedico(req : Request, res : Response) {
 
@@ -98,6 +122,13 @@ class Medico extends Controller{
             res.status(400).json({success: false, error: e.message });
         }
     }
+
+    /**
+     * Elimina un médico por número de cédula
+     * @param req objeto donde se almacenará toda la info de la petición
+     * @param res objeto que se usará para retonar la información y el código de estado
+     * @returns objeto json con la información eliminada y valor booleano si se ejecutó correctamente
+    **/
 
     async removeMedico(req : Request, res : Response) {
 

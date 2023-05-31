@@ -30,6 +30,10 @@ class MedicoRouter extends RouterCont {
     this.router.delete("/:id", validateParams, Session.checkJWT, this.medicoController.removeMedico.bind(this.medicoController));
   }
 
+  /**
+   * @returns retorna la propiedad router con todas las rutas creadas y que así mismo es heredada de la clase RouterCont
+  **/
+ 
   public getRoutes(): Router {
     return this.router;
   }

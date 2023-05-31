@@ -16,16 +16,28 @@ class App{
         this.routes();
     }
     
+    /**
+     * Configuración de express
+     */
+
     private config(){
         this.app.use(cors());
         this.app.use(express.json());
     }
+
+    /**
+     * Definición de rutas
+     */
 
     private routes(): void{
         const routerCont = new RouterCont();
         const routers = routerCont.getRoutes();
         this.app.use(routers);
     }
+
+    /**
+     * Ejecutar servidor
+     */
 
     public listen() {
         this.app.listen(PORT, () => {

@@ -30,6 +30,10 @@ class PacienteRouter extends RouterCont {
     this.router.delete("/:id", validateParams, this.pacienteController.removePacient.bind(this.pacienteController));
   }
 
+  /**
+   * @returns retorna la propiedad router con todas las rutas creadas y que así mismo es heredada de la clase RouterCont
+  **/
+
   public getRoutes(): Router {
     return this.router;
   }

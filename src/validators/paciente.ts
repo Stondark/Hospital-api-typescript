@@ -1,7 +1,10 @@
-import { body, check, param, checkExact, ValidationChain } from 'express-validator';
+import { check, checkExact } from 'express-validator';
 import { validateReq } from '../utils/Validator';
 import { NextFunction, Request, Response } from 'express';
 
+/**
+ * Valida una estructura json pasada en el request bajo ciertos parámetros
+ */
 
 const validateCreate = [
     check("data").exists(),
