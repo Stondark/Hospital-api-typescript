@@ -49,7 +49,6 @@ class Paciente extends Controller{
 
     async cratePacient(req : Request, res : Response) {
         const { data } =  req.body;
-        const length_data = Object.keys(data).length;
 
         try {
             const pacients = await this.prismaDB.paciente.createMany({
@@ -59,9 +58,7 @@ class Paciente extends Controller{
 
             if(pacients.count == 0){
                 throw new Error("Registro no insertado");
-            } else if (pacients.count != length_data) {
-                throw new Error(`Se insertó solo ${pacients.count} registros de ${length_data}`);
-            }
+            } 
 
             res.json({success: true, data: pacients});
         } catch (e: any) {

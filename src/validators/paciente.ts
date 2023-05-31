@@ -5,11 +5,11 @@ import { NextFunction, Request, Response } from 'express';
 
 const validateCreate = [
     check("data").exists(),
-    check("data.*.cedula").exists().toInt().isInt(),
-    check("data.*.nombre").exists(),
-    check("data.*.apellido").exists(),
-    check("data.*.fechaNacimiento").exists().toDate().isDate(),
-    check("data.*.telefono").exists(),
+    check("data.cedula").exists().toInt().isInt(),
+    check("data.nombre").exists(),
+    check("data.apellido").exists(),
+    check("data.fechaNacimiento").exists().isISO8601().toDate(),
+    check("data.telefono").exists(),
     checkExact(),
     (req: Request, res: Response, next: NextFunction) => {
         validateReq(req, res, next);

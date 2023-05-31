@@ -9,10 +9,15 @@ class Cita extends Controller{
 
     async findCitas(req : Request, res : Response) {
         try {
-            const citas = await this.prismaDB.cita.findMany();
+            const citas = await this.prismaDB.cita.findMany({
+                include: {
+                    paciente: true,
+                    medico: true
+                }
+            });
             
             if(citas.length == 0){
-                throw new Error("No se encuentran registros para Pacientes");
+                throw new Error("No se encuentran registros para Citas");
             }
 
             res.json({success: true, data: citas});
@@ -49,8 +54,7 @@ class Cita extends Controller{
 
     async createCita(req : Request, res : Response) {
         const { data } =  req.body;
-        const length_data = Object.keys(data).length;
-
+        
         try {
 
             const validPacient = await this.prismaDB.paciente.findUnique({
@@ -80,9 +84,7 @@ class Cita extends Controller{
 
             if(citas.count == 0){
                 throw new Error("Registro no insertado");
-            } else if (citas.count != length_data) {
-                throw new Error(`Se insertó solo ${citas.count} registros de ${length_data}`);
-            }
+            } 
 
             res.json({success: true, data: citas});
         } catch (e: any) {
