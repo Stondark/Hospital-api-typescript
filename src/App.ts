@@ -1,6 +1,8 @@
 import express, { Application }  from "express";
 import cors from "cors";
 import RouterCont from "./Routes/index";
+import swaggerUi from "swagger-ui-express";
+import swaggerSetup from "./utils/swagger";
 
 import "dotenv/config";
 
@@ -23,6 +25,7 @@ class App{
     private config(){
         this.app.use(cors());
         this.app.use(express.json());
+        this.app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerSetup));
     }
 
     /**
