@@ -5,6 +5,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerSetup from "./utils/swagger";
 
 import "dotenv/config";
+import passport from "passport";
 
 const PORT = process.env.PORT ?? 3001;
 
@@ -26,6 +27,7 @@ class App{
         this.app.use(cors());
         this.app.use(express.json());
         this.app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerSetup));
+        this.app.use(passport.initialize());
     }
 
     /**

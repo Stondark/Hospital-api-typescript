@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { readdirSync } from "fs";
+import passport from "passport";
 import Logger from "../middleware/Logger";
 
 class RouterCont{
@@ -25,7 +26,8 @@ class RouterCont{
             if(cleanName !== 'index'){
                 import(`./${cleanName}`).then((module) => { 
                     const moduleRouter = module.default;
-                    this.router.use(`/${cleanName}`, Logger.consoleRequest, moduleRouter);
+                    cleanName !== 'auth' ? this.router.use(`/${cleanName}`, Logger.consoleRequest, passport.authenticate('jwt',{session:false}), moduleRouter) 
+                        : this.router.use(`/${cleanName}`, Logger.consoleRequest, moduleRouter) ;
                 })
             }
         })

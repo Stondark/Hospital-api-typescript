@@ -16,7 +16,7 @@ class Funcionario extends Controller{
      * @returns en caso de que no exista retornará null
      */
 
-    private async validateExist(user : string){
+    public async validateExist(user : string){
         const confirm = await this.prismaDB.funcionario.findFirst({
             where: {
                 username: user

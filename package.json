@@ -25,11 +25,12 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.0",
     "nodemon": "^2.0.22",
+    "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.4",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.6.3"
+    "swagger-ui-express": "^4.6.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
